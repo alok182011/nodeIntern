@@ -10,34 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-const arr = ["NASA", "ISRO", "CIA", "RAW"];
+const studentRouter = require("./src/api/student/studentRouter");
 
-app.get("/hi", (req, res, next) => {
-  console.log(req.query);
-  if (req.query.index) {
-    res.send(arr[req.query.index]);
-  } else {
-    res.send(arr);
-  }
-});
-
-app.post("/hi", (req, res, next) => {
-  console.log(req.body);
-  arr.push(req.body.name);
-  res.send(arr);
-});
-
-app.put("/hi", (req, res, next) => {
-  console.log(req.body);
-  const { name, index } = req.body;
-  arr[index] = name;
-  res.send(arr);
-});
-
-app.delete("/hi", (req, res, next) => {
-  arr.pop();
-  res.send(arr);
-});
+app.use("/api/student", studentRouter);
 
 //default route
 app.use("/", (req, res, next) => {
