@@ -1,6 +1,7 @@
 const http = require("http");
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -52,6 +53,19 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 8001;
 
-httpServer.listen(port, () => {
-  console.log("serving!!!");
+mongoose.connect(
+  "mongodb+srv://nodeintern:nodeintern@nodeintern.jlydipt.mongodb.net/nodeintern?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function callback() {
+  console.log("MongoDB connected!!!");
+  httpServer.listen(port, () => {
+    console.log("serving!!!");
+  });
 });
